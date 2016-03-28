@@ -53,7 +53,7 @@
             this.streamLink.Name = "streamLink";
             this.streamLink.Size = new System.Drawing.Size(75, 23);
             this.streamLink.TabIndex = 4;
-            this.streamLink.Text = "Stream Link";
+            this.streamLink.Text = "View Stream";
             this.streamLink.UseVisualStyleBackColor = true;
             this.streamLink.Click += new System.EventHandler(this.streamLink_Click);
             // 

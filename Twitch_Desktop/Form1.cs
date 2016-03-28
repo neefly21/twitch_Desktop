@@ -34,6 +34,7 @@ namespace Twitch_Desktop
         {
             Thread thread = new Thread(new ThreadStart(LoadAPI));
             thread.Start();
+            //Used to fill the list with the active streams.
             while (streamsParsed == false)
             {
                 if (updateList == true)
@@ -47,17 +48,7 @@ namespace Twitch_Desktop
         private void label1_Click(object sender, EventArgs e)
         {
 
-        }
-
-        private void streamLink_Click(object sender, EventArgs e)
-        {
-            int index = activeStreams.SelectedIndex;
-
-            MessageBox.Show("Stream launched in default browser.");
-
-            System.Diagnostics.Process.Start("http://twitch.tv/" + streamerLink[index].Substring(37));
-
-        }
+        }   
 
         private void streamList_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -67,10 +58,12 @@ namespace Twitch_Desktop
         //Will load the pages api and json
         void LoadAPI()
         {
+            //Temp variables to sort the items into their corresponding list.
             String gameNames = "";
             String streamerName = "";
             String streamLink = "";
 
+            //Variables to help iterate through the json
             int offset = 0;
             int currGame = 0;
 
@@ -143,9 +136,7 @@ namespace Twitch_Desktop
             for (int i = 0; i < streamers.Length; i++)
             {
                 if (streamers[i].Equals(" "))
-                {
-
-                }
+                {}
                 else
                 {
                     streamers[i] = streamers[i].Trim();
@@ -170,12 +161,12 @@ namespace Twitch_Desktop
                 }
            }
 
+            //Marks end of parsing and tells the loop at begging to fill list.
             Console.WriteLine("Streamer Links Parsed");
             updateList = true;
 
-
-            Console.WriteLine("Number of streams:" + displayName.Count + " First streamer: " + displayName[0]);
-            Console.WriteLine("First link: " + streamerLink[0]);
+            //For debugging
+            Console.WriteLine("Number of streams:" + displayName.Count);
 
         }
 
@@ -192,10 +183,10 @@ namespace Twitch_Desktop
 
         }
 
+        //Favorite button actions
         private void favButton_Click(object sender, EventArgs e)
         {
             int index = activeStreams.SelectedIndex;
-
 
             try
             {
@@ -208,6 +199,7 @@ namespace Twitch_Desktop
 
         }
 
+        //Remove Favorite button actions
         private void removeFavorite_Click(object sender, EventArgs e)
         {
             int index = favorites.SelectedIndex;
@@ -222,5 +214,17 @@ namespace Twitch_Desktop
                 MessageBox.Show("No user selected or no favorited users!");
             }
         }
+
+        //View Stream button actions
+        private void streamLink_Click(object sender, EventArgs e)
+        {
+            int index = activeStreams.SelectedIndex;
+
+            MessageBox.Show("Stream launched in default browser.");
+
+            System.Diagnostics.Process.Start("http://twitch.tv/" + streamerLink[index].Substring(37));
+
+        }
+
     }
 }
