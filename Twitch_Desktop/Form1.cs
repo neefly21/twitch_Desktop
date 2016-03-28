@@ -51,6 +51,11 @@ namespace Twitch_Desktop
 
         private void streamLink_Click(object sender, EventArgs e)
         {
+            int index = activeStreams.SelectedIndex;
+
+            MessageBox.Show("Stream launched in default browser.");
+
+            System.Diagnostics.Process.Start("http://twitch.tv/" + streamerLink[index].Substring(37));
 
         }
 
@@ -168,10 +173,6 @@ namespace Twitch_Desktop
             Console.WriteLine("Streamer Links Parsed");
             updateList = true;
 
-            //Sorting lists into alphabetical order
-            displayName.Sort();
-            streamerLink.Sort();
-
 
             Console.WriteLine("Number of streams:" + displayName.Count + " First streamer: " + displayName[0]);
             Console.WriteLine("First link: " + streamerLink[0]);
@@ -189,6 +190,37 @@ namespace Twitch_Desktop
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void favButton_Click(object sender, EventArgs e)
+        {
+            int index = activeStreams.SelectedIndex;
+
+
+            try
+            {
+                favorites.Items.Add(displayName[index]);
+            }
+            catch (Exception ee)
+            {
+                MessageBox.Show("No user selected!");
+            }
+
+        }
+
+        private void removeFavorite_Click(object sender, EventArgs e)
+        {
+            int index = favorites.SelectedIndex;
+
+
+            try
+            {
+                favorites.Items.RemoveAt(index);
+            }
+            catch (Exception eer)
+            {
+                MessageBox.Show("No user selected or no favorited users!");
+            }
         }
     }
 }

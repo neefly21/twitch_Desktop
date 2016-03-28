@@ -12,3 +12,11 @@ c:\users\neeflysworkstation\documents\visual studio 2015\Projects\Twitch_Desktop
 C:\Users\neeflysWorkstation\Documents\Visual Studio 2015\Projects\twitchDesktop\Twitch_Desktop\bin\Debug\Twitch_Desktop.exe.config
 C:\Users\neeflysWorkstation\Documents\Visual Studio 2015\Projects\twitchDesktop\Twitch_Desktop\obj\Debug\Twitch_Desktop.exe
 C:\Users\neeflysWorkstation\Documents\Visual Studio 2015\Projects\twitchDesktop\Twitch_Desktop\obj\Debug\Twitch_Desktop.pdb
+C:\Users\neeflysWorkstation\Documents\Visual Studio 2015\Projects\twitchDesktop\Twitch_Desktop\bin\Debug\Twitch_Desktop.exe
+C:\Users\neeflysWorkstation\Documents\Visual Studio 2015\Projects\twitchDesktop\Twitch_Desktop\bin\Debug\Twitch_Desktop.pdb
+C:\Users\neeflysWorkstation\Documents\Visual Studio 2015\Projects\twitchDesktop\Twitch_Desktop\bin\Debug\Newtonsoft.Json.dll
+C:\Users\neeflysWorkstation\Documents\Visual Studio 2015\Projects\twitchDesktop\Twitch_Desktop\bin\Debug\Newtonsoft.Json.xml
+C:\Users\neeflysWorkstation\Documents\Visual Studio 2015\Projects\twitchDesktop\Twitch_Desktop\obj\Debug\Twitch_Desktop.csprojResolveAssemblyReference.cache
+C:\Users\neeflysWorkstation\Documents\Visual Studio 2015\Projects\twitchDesktop\Twitch_Desktop\obj\Debug\Twitch_Desktop.twitchDesktop.resources
+C:\Users\neeflysWorkstation\Documents\Visual Studio 2015\Projects\twitchDesktop\Twitch_Desktop\obj\Debug\Twitch_Desktop.Properties.Resources.resources
+C:\Users\neeflysWorkstation\Documents\Visual Studio 2015\Projects\twitchDesktop\Twitch_Desktop\obj\Debug\Twitch_Desktop.csproj.GenerateResource.Cache
