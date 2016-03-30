@@ -42,13 +42,17 @@ namespace Twitch_Desktop
         {
             
             Thread thread = new Thread(new ThreadStart(LoadAPI));
+
             thread.Start();
+            
+
             //Used to fill the list with the active streams.
             while (streamsParsed == false)
             {
                 if (updateList == true)
                 {
                     fill();
+                    loadFavorites();
                     streamsParsed = true;
                 }
             }
@@ -177,12 +181,38 @@ namespace Twitch_Desktop
 
         }
 
+        void loadFavorites()
+        {
+            try
+            {
+                conn.Open();
+                cmd = new SqlCommand("SELECT * FROM favorites", conn);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    favorites.Items.Add(reader["displayName"]);
+                    favoritesDBRef.Add((String) reader["displayName"]);
+                }
+                conn.Close();
+            }
+            catch (Exception loadErr)
+            {
+                Console.WriteLine(loadErr);
+                //MessageBox.Show("Error loading names and or no names in database!");
+            }
+        }
+
         void fill()
         {
             for (int i = 0; i < displayName.Count; i++)
             {
                 activeStreams.Items.Add(displayName[i]);
             }
+
+            //Load favorites
+            /*
+           
+            */
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -197,38 +227,36 @@ namespace Twitch_Desktop
 
             try
             {
-                favorites.Items.Add(displayName[index]);
-                favoritesDBRef.Add(displayName[index]);
-                indexOfActive.Add(index);
-            }
-            catch (Exception ee)
-            {
-                MessageBox.Show("No user selected!");
-            }
-
-            try
-            {
                 //Opens database and add info to the database
-                
+
                 conn.Open();
 
                 cmd = new SqlCommand("INSERT INTO favorites VALUES('" + displayName[index] + "')", conn);
                 cmd.ExecuteNonQuery();
                 conn.Close();
 
-                //For testing.
-                MessageBox.Show("Streamer added to database succesfull!");
-                     
             }
-            catch(Exception SQLERROR)
+            catch (Exception SQLERROR)
             {
-                MessageBox.Show("ERROR ADDING USER TO DB");
+                MessageBox.Show(SQLERROR.Message);
             }
+
+            try
+            {
+                favorites.Items.Add(displayName[index]);
+                favoritesDBRef.Add(displayName[index]);
+                indexOfActive.Add(index);
+            }
+            catch (Exception ee)
+            {
+                MessageBox.Show(ee.Message);
+            }
+
+           
 
             activeStreams.SetSelected(activeStreams.SelectedIndex, false);
 
         }
-
 
         //Remove Favorite button actions
         private void removeFavorite_Click(object sender, EventArgs e)
@@ -237,21 +265,18 @@ namespace Twitch_Desktop
 
             try
             {
-                MessageBox.Show(favorites.GetItemText(favorites.SelectedIndex));
+                
                 //Opens database and add info to the database
                 
                 conn.Open();
                 cmd = new SqlCommand("DELETE FROM favorites WHERE displayName='" + favoritesDBRef[index] + "'", conn);
                 cmd.ExecuteNonQuery();
                 conn.Close();
-
-                //For testing.
-                MessageBox.Show("Streamer removed from database succesfull!");
                 
             }
             catch (Exception SQLERROR)
             {
-                MessageBox.Show("ERROR ADDING USER TO DB");
+                MessageBox.Show(SQLERROR.Message);
             }
 
             try
@@ -262,7 +287,7 @@ namespace Twitch_Desktop
             }
             catch (Exception eer)
             {
-                MessageBox.Show("No user selected or no favorited users!");
+                MessageBox.Show(eer.Message);
             }
 
         }
