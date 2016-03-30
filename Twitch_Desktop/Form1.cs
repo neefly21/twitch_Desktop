@@ -225,34 +225,41 @@ namespace Twitch_Desktop
         {
             int index = activeStreams.SelectedIndex;
 
-            try
+            if (favoritesDBRef.Contains(displayName[index]))
             {
-                //Opens database and add info to the database
+                MessageBox.Show("User already in favorites!");
+            }
+            else {
 
-                conn.Open();
+                try
+                {
+                    //Opens database and add info to the database
 
-                cmd = new SqlCommand("INSERT INTO favorites VALUES('" + displayName[index] + "')", conn);
-                cmd.ExecuteNonQuery();
-                conn.Close();
+                    conn.Open();
+
+                    cmd = new SqlCommand("INSERT INTO favorites VALUES('" + displayName[index] + "')", conn);
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+
+                }
+                catch (Exception SQLERROR)
+                {
+                    MessageBox.Show(SQLERROR.Message);
+                }
+
+                try
+                {
+                    favorites.Items.Add(displayName[index]);
+                    favoritesDBRef.Add(displayName[index]);
+                    indexOfActive.Add(index);
+                }
+                catch (Exception ee)
+                {
+                    MessageBox.Show(ee.Message);
+                }
 
             }
-            catch (Exception SQLERROR)
-            {
-                MessageBox.Show(SQLERROR.Message);
-            }
-
-            try
-            {
-                favorites.Items.Add(displayName[index]);
-                favoritesDBRef.Add(displayName[index]);
-                indexOfActive.Add(index);
-            }
-            catch (Exception ee)
-            {
-                MessageBox.Show(ee.Message);
-            }
-
-           
+            
 
             activeStreams.SetSelected(activeStreams.SelectedIndex, false);
 
@@ -296,12 +303,7 @@ namespace Twitch_Desktop
         private void streamLink_Click(object sender, EventArgs e)
         {
             int indexActive = activeStreams.SelectedIndex;
-            int indexFavorite = favorites.SelectedIndex;
-
-            MessageBox.Show("Stream launched in default browser.");
-
-            Console.WriteLine("Active Streamer Index: " + indexActive);
-            Console.WriteLine("Favorite Streamer Index: " + indexFavorite);
+            int indexFavorite = 0;
 
             //Check weather the stream is in favorites or not..
             try
@@ -312,7 +314,11 @@ namespace Twitch_Desktop
                 }
                 else if (indexFavorite >= 0 && indexActive == -1)
                 {
-                    System.Diagnostics.Process.Start("http://twitch.tv/" + streamerLink[indexOfActive[indexFavorite]].Substring(37));
+                    int currInd = favorites.SelectedIndex;
+
+                    indexFavorite = activeStreams.Items.IndexOf(favoritesDBRef[currInd]);
+
+                    System.Diagnostics.Process.Start("http://twitch.tv/" + streamerLink[indexFavorite].Substring(37));
                 }
 
                 activeStreams.SetSelected(activeStreams.SelectedIndex, false);
