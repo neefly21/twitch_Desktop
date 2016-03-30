@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Data.SqlClient;
 
 namespace Twitch_Desktop
 {
@@ -23,6 +24,7 @@ namespace Twitch_Desktop
         static List<String> gameName = new List<String>();
         static List<String> displayName = new List<String>();
         static List<String> streamerLink = new List<String>();
+        static List<int> indexOfActive = new List<int>();
 
         public twitchDesktop()
         {
@@ -69,7 +71,7 @@ namespace Twitch_Desktop
 
             
             //Itterates through the game titles
-            while (offset < 200)
+            while (offset < 50)
             {
                 var gameUrl = "https://api.twitch.tv/kraken/games/top?limit=10&offset=" + offset;
                 String jsonGame = client.DownloadString(gameUrl);
@@ -103,8 +105,6 @@ namespace Twitch_Desktop
                 Console.WriteLine(games[i]);
             }
 
-            
-
             //Gets streamer name
             while (currGame < 50)
             {
@@ -125,7 +125,6 @@ namespace Twitch_Desktop
                         
                     }
                 }
-
                 currGame++;
             }
 
@@ -178,6 +177,7 @@ namespace Twitch_Desktop
             }
         }
 
+       
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -191,11 +191,14 @@ namespace Twitch_Desktop
             try
             {
                 favorites.Items.Add(displayName[index]);
+                indexOfActive.Add(index);
             }
             catch (Exception ee)
             {
                 MessageBox.Show("No user selected!");
             }
+
+            activeStreams.SetSelected(activeStreams.SelectedIndex, false);
 
         }
 
@@ -204,27 +207,58 @@ namespace Twitch_Desktop
         {
             int index = favorites.SelectedIndex;
 
-
             try
             {
                 favorites.Items.RemoveAt(index);
+                indexOfActive.Remove(index);
             }
             catch (Exception eer)
             {
                 MessageBox.Show("No user selected or no favorited users!");
             }
+
         }
 
         //View Stream button actions
         private void streamLink_Click(object sender, EventArgs e)
         {
-            int index = activeStreams.SelectedIndex;
+            int indexActive = activeStreams.SelectedIndex;
+            int indexFavorite = favorites.SelectedIndex;
 
             MessageBox.Show("Stream launched in default browser.");
 
-            System.Diagnostics.Process.Start("http://twitch.tv/" + streamerLink[index].Substring(37));
+            Console.WriteLine("Active Streamer Index: " + indexActive);
+            Console.WriteLine("Favorite Streamer Index: " + indexFavorite);
+
+            //Check weather the stream is in favorites or not..
+            try
+            {
+                if (indexActive >= 0)
+                {
+                    System.Diagnostics.Process.Start("http://twitch.tv/" + streamerLink[indexActive].Substring(37));
+                }
+                else if (indexFavorite >= 0 && indexActive == -1)
+                {
+                    System.Diagnostics.Process.Start("http://twitch.tv/" + streamerLink[indexOfActive[indexFavorite]].Substring(37));
+                }
+
+                activeStreams.SetSelected(activeStreams.SelectedIndex, false);
+                favorites.SetSelected(favorites.SelectedIndex, false);
+            }
+            catch (Exception exMouse)
+            {
+
+            }
+        }
+
+        private void activeStreams_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
         }
 
+        private void favorites_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

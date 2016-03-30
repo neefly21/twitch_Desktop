@@ -74,6 +74,7 @@
             this.activeStreams.Name = "activeStreams";
             this.activeStreams.Size = new System.Drawing.Size(168, 524);
             this.activeStreams.TabIndex = 12;
+            this.activeStreams.SelectedIndexChanged += new System.EventHandler(this.activeStreams_SelectedIndexChanged);
             // 
             // removeFavorite
             // 
@@ -92,6 +93,7 @@
             this.favorites.Name = "favorites";
             this.favorites.Size = new System.Drawing.Size(133, 264);
             this.favorites.TabIndex = 14;
+            this.favorites.SelectedIndexChanged += new System.EventHandler(this.favorites_SelectedIndexChanged);
             // 
             // favoriteLabel
             // 
