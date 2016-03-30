@@ -21,10 +21,16 @@ namespace Twitch_Desktop
         bool streamsParsed = false;
         bool updateList;
 
+        SqlConnection conn = new SqlConnection("Data Source=DESKTOP-JV9U6EB\\SQLEXPRESS;Initial Catalog=twitchDesktop;Integrated Security=True");
+        SqlCommand cmd;
+
         static List<String> gameName = new List<String>();
         static List<String> displayName = new List<String>();
         static List<String> streamerLink = new List<String>();
+        static List<String> favoritesDBRef = new List<String>();
+
         static List<int> indexOfActive = new List<int>();
+
 
         public twitchDesktop()
         {
@@ -34,6 +40,7 @@ namespace Twitch_Desktop
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            
             Thread thread = new Thread(new ThreadStart(LoadAPI));
             thread.Start();
             //Used to fill the list with the active streams.
@@ -45,6 +52,7 @@ namespace Twitch_Desktop
                     streamsParsed = true;
                 }
             }
+            
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -177,7 +185,6 @@ namespace Twitch_Desktop
             }
         }
 
-       
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -191,6 +198,7 @@ namespace Twitch_Desktop
             try
             {
                 favorites.Items.Add(displayName[index]);
+                favoritesDBRef.Add(displayName[index]);
                 indexOfActive.Add(index);
             }
             catch (Exception ee)
@@ -198,9 +206,29 @@ namespace Twitch_Desktop
                 MessageBox.Show("No user selected!");
             }
 
+            try
+            {
+                //Opens database and add info to the database
+                
+                conn.Open();
+
+                cmd = new SqlCommand("INSERT INTO favorites VALUES('" + displayName[index] + "')", conn);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+
+                //For testing.
+                MessageBox.Show("Streamer added to database succesfull!");
+                     
+            }
+            catch(Exception SQLERROR)
+            {
+                MessageBox.Show("ERROR ADDING USER TO DB");
+            }
+
             activeStreams.SetSelected(activeStreams.SelectedIndex, false);
 
         }
+
 
         //Remove Favorite button actions
         private void removeFavorite_Click(object sender, EventArgs e)
@@ -209,8 +237,28 @@ namespace Twitch_Desktop
 
             try
             {
+                MessageBox.Show(favorites.GetItemText(favorites.SelectedIndex));
+                //Opens database and add info to the database
+                
+                conn.Open();
+                cmd = new SqlCommand("DELETE FROM favorites WHERE displayName='" + favoritesDBRef[index] + "'", conn);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+
+                //For testing.
+                MessageBox.Show("Streamer removed from database succesfull!");
+                
+            }
+            catch (Exception SQLERROR)
+            {
+                MessageBox.Show("ERROR ADDING USER TO DB");
+            }
+
+            try
+            {
                 favorites.Items.RemoveAt(index);
                 indexOfActive.Remove(index);
+                favoritesDBRef.RemoveAt(index);
             }
             catch (Exception eer)
             {
