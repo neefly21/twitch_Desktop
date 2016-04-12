@@ -20,3 +20,4 @@ C:\Users\neeflysWorkstation\Documents\Visual Studio 2015\Projects\twitchDesktop\
 C:\Users\neeflysWorkstation\Documents\Visual Studio 2015\Projects\twitchDesktop\Twitch_Desktop\obj\Debug\Twitch_Desktop.twitchDesktop.resources
 C:\Users\neeflysWorkstation\Documents\Visual Studio 2015\Projects\twitchDesktop\Twitch_Desktop\obj\Debug\Twitch_Desktop.Properties.Resources.resources
 C:\Users\neeflysWorkstation\Documents\Visual Studio 2015\Projects\twitchDesktop\Twitch_Desktop\obj\Debug\Twitch_Desktop.csproj.GenerateResource.Cache
+C:\Users\neeflysWorkstation\Documents\Visual Studio 2015\Projects\twitchDesktop\Twitch_Desktop\obj\Debug\Twitch_Desktop.viewStream.resources

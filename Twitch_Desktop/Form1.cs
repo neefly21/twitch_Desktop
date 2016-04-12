@@ -308,21 +308,26 @@ namespace Twitch_Desktop
             //Check weather the stream is in favorites or not..
             try
             {
+                
                 if (indexActive >= 0)
                 {
-                    System.Diagnostics.Process.Start("http://twitch.tv/" + streamerLink[indexActive].Substring(37));
+                    viewStream sv = new viewStream();
+                    sv.streamViewer.Navigate(new Uri("http://twitch.tv/" + streamerLink[indexActive].Substring(37)));
+                    sv.Show();
                 }
                 else if (indexFavorite >= 0 && indexActive == -1)
                 {
                     int currInd = favorites.SelectedIndex;
-
                     indexFavorite = activeStreams.Items.IndexOf(favoritesDBRef[currInd]);
 
-                    System.Diagnostics.Process.Start("http://twitch.tv/" + streamerLink[indexFavorite].Substring(37));
+                    viewStream sv = new viewStream();
+                    sv.streamViewer.Navigate(new Uri("http://twitch.tv/" + streamerLink[indexFavorite].Substring(37)));
+                    sv.Show();
                 }
 
                 activeStreams.SetSelected(activeStreams.SelectedIndex, false);
-                favorites.SetSelected(favorites.SelectedIndex, false);
+                favorites.SetSelected(favorites.SelectedIndex, false);  
+
             }
             catch (Exception exMouse)
             {
